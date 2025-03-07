@@ -1,0 +1,98 @@
+/* CSS HEX */
+:root {
+    --monitor-gray: #3C3C3C;
+    --hospital-gown: #778899;
+    --bedpan-gray: #6C757D;
+    --overhang-yellow: #F0E68C;
+    --siren-red: #D35400;
+
+    --off-white: #e3d8cb;
+    --hosptial-white: #F7F7F7;
+    --legal-black: #000000;
+
+    --page-font: 'century gothic', sans-serif;
+}
+
+body {
+    background-color: var(--hospital-gown);
+}
+
+
+video {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#heroPage{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blurVideo{
+    filter: blur(10px);
+    transition: 2s;
+}
+
+#loginCard{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 30rem;
+    height: 15rem;
+    display: none;
+    transition: all 2s;
+    box-shadow: 0 0 7px 2px var(--off-white);
+}
+
+.fadeInRight{
+    animation: fadeInRight 3.2s;
+}
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translate(-0%, -0%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.fadeIn{
+    animation: fadeIn 2s;
+}
+.fadeOut{
+    animation: fadeOut 2s;
+}
+
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes shine{
+    10% {
+        opacity: 1;
+        transition-property: left, top, opacity;
+        transition-duration: 0.7s, 0.7s, 0.15s;
+        transition-timing-function: ease;
+    }
+    100% {
+        opacity: 0;
+        transition-property: left, top, opacity;
+    }
+}
