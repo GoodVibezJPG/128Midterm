@@ -1,77 +1,53 @@
-
-
-function showLogin(event){
+function showLogin(event) {
     let login = document.getElementById("loginCard");
     let video = document.getElementById("introVid");
 
-  if (event.currentTime >= 4.3) {
-      Promise.resolve().then(() => {
-          video.classList.add("blurVideo");
-          login.style.display = "block";
-          login.classList.add("fadeInRight");
-      }).catch(reject => {
-          login.style.display = "block";
-      });
-  }
+    if (event.currentTime >= 4.3) {
+        Promise.resolve().then(() => {
+            video.classList.add("blurVideo");
+            login.style.display = "block";
+            login.classList.add("fadeInRight");
+        }).catch(reject => {
+            login.style.display = "block";
+        });
+    }
 }
 
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("loginButton").addEventListener("click", () => {
-        let username = document.getElementById("username").value;
-        console.log(username); // This will log the input value to the console
-        verifyLogin(username);
-    });
+document.getElementById("loginButton").addEventListener("click", () => {
+    let username = document.getElementById("username").value;
+    verifyLogin(username);
 });
-function verifyLogin (username) {
-    let loginMessage = document.getElementById("loginText");
-    let userFound = false;
 
+function verifyLogin(username) {
+
+    if (username !== "[a-zA-Z0-9]+") {
+        alert("Please enter a valid username.");
+    }
     for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username){
-            userFound = true;
-
-            loginMessage.classList.add("fadeIn");
-            loginMessage.innerText = `${users[i].fName} ${users[i].lName}`;
-            // successfulLogin();
-            break;
+        if (username === users[i].userName || username === users[i].userName.toLowerCase()){
+            if (users[i].roleIndicator === true) {
+                alert(`Welcome ${users[i].fName} ${users[i].lName}. You have successfully logged in as an admin.`);
+                return true;
+            } else {
+                alert(`Welcome ${users[i].fName} ${users[i].lName}. You have successfully logged in as a user.`);
+                return true;
+            }
         }
     }
-    if(!userFound) {
-        loginMessage.innerText = "Invalid Username";
-    }
+    alert("Please enter a valid username.");
+    return false;
 }
-
-function successfulLogin() {
-    let loginCard = document.getElementById("loginCard");
-    loginCard.classList.add("fadeIn");
-
-    loginCard.innerHTML = ""
-    loginCard.innerHTML += `
-    <div class="card-body">
-        <h5 class="card-title">Welcome</h5>
-        <p class="card-text">You have successfully logged in</p>
-        <button id="logoutButton" class="btn btn-primary">Logout</button>
-    </div>
-    `;
-
-}
-
-
-
-
 
 class User {
-    constructor(_fName, _lName, _email, _username, _roleIndicator, _visualId) {
+    constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId) {
         this._fName = _fName;
         this._lName = _lName;
         this._email = _email;
-        this._username = _username;
+        this._userName = _userName;
         this._roleIndicator = _roleIndicator;
         this._visualId = _visualId;
     }
+
     get fName() {
         return this._fName;
     }
@@ -96,12 +72,12 @@ class User {
         this._email = value;
     }
 
-    get username() {
-        return this._username;
+    get userName() {
+        return this._userName;
     }
 
-    set username(value) {
-        this._username = value;
+    set userName(value) {
+        this._userName = value;
     }
 
     get roleIndicator() {
@@ -121,9 +97,8 @@ class User {
     }
 }
 
-//15 Users...
-const house = new User("Gregory","House","ghouse@pptch.org","Monstertrucksrcool", true, "ghouseVID");
-const wilson = new User("James", "Wilson","jwilson@pptch.org","JWilson", true, "jwilsonVID");
+const house = new User("Gregory", "House", "ghouse@pptch.org", "Monstertrucksrcool", true, "ghouseVID");
+const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true, "jwilsonVID");
 const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "lcuddyVID");
 const foreman = new User("Eric", "Foreman", "eforeman@pptch.org", "eForeman", false, "foremanVID");
 const cameron = new User("Allison", "Cameron", "acameron@pptch.org", "2nice4you", false, "cameronVID");
@@ -131,19 +106,14 @@ const chase = new User("Robert", "Chase", "rchase@pptch.org", "nineisfine", fals
 const thirteen = new User("Remy", "Hadley", "rhadley@pptch.org", "thirteen", false, "thirteenVID");
 const taub = new User("Chris", "Taub", "ctaub@pptch.org", "plasticman", false, "taubVID");
 const kutner = new User("Lawrence", "Kutner", "lkutner@pptch.org", "chillguy", false, "kutnerVID");
-//Idk who thse are havent watched later seasons
 const adams = new User("Jessica", "Adams", "jadams@pptch.org", "jAdams", false, "adamsVID");
 const park = new User("Chi", "Park", "cpark@pptch.org", "cPark", false, "parkVID");
-// Detective guy
 const tritter = new User("Michael", "Tritter", "mtritter@police.gov", "bullypatrol", false, "tritterVID");
-//PI guy
 const lucas = new User("Lucas", "Douglas", "lucasPI@yahoo.com", "PrivateGuy", false, "lucasVID");
-//Money guy
 const vogler = new User("Edward", "Vogler", "evogler@money.net", "moneybags", false, "voglerVID");
 const amber = new User("Amber", "Volakis", "avolakis@heaven.edu", "xthroatb", false, "amberVID");
 
-const users = [
+let users = [
     house, wilson, cuddy, foreman, cameron, chase, thirteen, taub, kutner, adams, park, tritter, lucas, vogler, amber
 ];
 console.log(users.length);
-
