@@ -1,54 +1,106 @@
+
+
 function showLogin(event) {
     let login = document.getElementById("loginCard");
     let video = document.getElementById("introVid");
-
+    video.volume = 0.5;
+        
     if (event.currentTime >= 4.3) {
         video.classList.add("blurVideo");
         login.style.display = "block";
         login.classList.add("fadeInRight");
     }
-}
+    video.onended = () => {
+        video.muted = true;
+        video.currentTime = 0;
+        video.play();
+    };
 
+    video.onerror = () => {
+        video.style.display = "none";
+        document.getElementById("heroPage").style.backgroundImage = "url('assets/houseBackground.jpg')";
+        login.style.display = "block";
+        login.classList.add("fadeInRight");
+    };
+
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loginButton").addEventListener("click", () => {
         let username = document.getElementById("username").value;
-        verifyLogin(username);
+        verifyLogin(username)
+            .then((userFound) => {userView(userFound);})
+            .catch((error) => {console.log(error);})
     });
 });
+
+let stupidCounter = 0;
 function verifyLogin (username) {
     let loginMessage = document.getElementById("loginText");
-    let userFound = false;
+    let houseInsult = document.getElementById("houseInsult");
 
-    for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username){
-            userFound = true;
-            loginMessage.classList.add("fadeTextIn");
-            loginMessage.innerText = `${users[i].fName} ${users[i].lName}`;
-            break;
-        } else {
-            loginMessage.classList.add("fadeTextIn");
+    return new Promise((resolve, reject) => {
+        try{
+            if (!/^[a-zA-Z0-9.-_ ]*$/.test(username)) {
+                throw new Error("Invalid characters");
+            }
+            if (username.length < 5 || username.length > 20) {
+                throw new Error("Invalid Username Length.");
+            }
+            for (let i = 0; i < users.length; i++) {
+                if (username === users[i].username){
+                    loginMessage.classList.add("fadeTextIn");
+                    loginMessage.innerText = `Welcome ${users[i].fName} ${users[i].lName}`;
+                    resolve(users[i]);
+                    break;
+                }
+            }
+            throw new Error("Username not found");
+
+        } catch (e) {
+            stupidCounter++;
+            loginMessage.innerText = e.message;
             loginMessage.style.color = "red";
-            loginMessage.innerText = "User not found";
+            loginMessage.classList.add("text-warning");
+            loginMessage.classList.add("shake");
+            setTimeout(() => {
+                loginMessage.classList.remove("shake");
+            }, 600);
+            if(stupidCounter === 3){
+                houseInsult.play();
+                stupidCounter = 0;
+            }
+            reject(e);
         }
-    }
+    });
 }
 
-function userView(result) {
-    video = document.getElementById("introVid");
-    video.pause();
 
-
-    if (result === true) {
-        let userView = document.getElementById("userView");
-
-        userView.style.display = "block";
-        login.style.display = "none";
-
-    } else {
-        login.style.display = "block";
-    }
+function userView (userFound) {
+    stupidCounter++;
+    document.getElementById("heroPage").style.display = "none";
+    document.getElementById("introVid").pause();
+    let userView = document.getElementById("userView");
+    let login = document.getElementById("loginCard");
+  
+    userView.style.display = "block";
+    login.style.display = "none";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class User {
@@ -56,7 +108,7 @@ class User {
         this._fName = _fName;
         this._lName = _lName;
         this._email = _email;
-        this._userName = _userName;
+        this._username = _userName;
         this._roleIndicator = _roleIndicator;
         this._visualId = _visualId;
     }
