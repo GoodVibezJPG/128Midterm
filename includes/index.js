@@ -12,8 +12,6 @@ function showLogin(event) {
     }
     video.onended = () => {
         video.muted = true;
-        video.currentTime = 0;
-        video.play();
     };
 
     video.onerror = () => {
@@ -77,14 +75,57 @@ function verifyLogin (username) {
 
 
 function userView (userFound) {
-    stupidCounter++;
-    document.getElementById("heroPage").style.display = "none";
-    document.getElementById("introVid").pause();
     let userView = document.getElementById("userView");
-    let login = document.getElementById("loginCard");
-  
+    document.getElementById("introVid").pause();
+    document.getElementById("heroPage").style.display = "none";
+
     userView.style.display = "block";
-    login.style.display = "none";
+
+    let masonry = document.getElementById("masonryRow");
+    masonry.innerHTML = "";
+    masonry.innerHTML += `
+        <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-3">
+                    <div class="circle mx-auto"><img src="images/${userFound.visualId}" class="card-img-top rounded-circle " alt="a picture of ${userFound.fName} ${userFound.lName})"></div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
+                        <p class="card-text"></p>
+                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                    </div>
+                </div>
+          </div>
+    `;
+    if (userFound.roleIndicator === true) {
+        for (let user in users) {
+            masonry.innerHTML += `
+        <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-3">
+                    <div class="circle mx-auto"><img src="images/${user.visualId}" class="card-img-top rounded-circle " alt="a picture of ${user.fName} ${user.lName})"></div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                        <p class="card-text">user.description</p>
+                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                    </div>
+                </div>
+          </div>
+    `;
+        }
+    } else{
+        for (let admin in users.roleIndicator) {
+            masonry.innerHTML += `
+        <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card p-3">
+                    <div class="circle mx-auto"><img src="images/${user.visualId}" class="card-img-top rounded-circle " alt="a picture of ${user.fName} ${user.lName})"></div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                        <p class="card-text">user.description</p>
+                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                    </div>
+                </div>
+          </div>
+    `;
+        }
+    }
 }
 
 
@@ -181,4 +222,5 @@ const amber = new User("Amber", "Volakis", "avolakis@heaven.edu", "xthroatb", fa
 let users = [
     house, wilson, cuddy, foreman, cameron, chase, thirteen, taub, kutner, adams, park, tritter, lucas, vogler, amber
 ];
-console.log(users.length);
+
+// user._description
