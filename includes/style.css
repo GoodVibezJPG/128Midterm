@@ -52,6 +52,14 @@ video {
     transition: all 2s;
     box-shadow: 0 0 7px 2px var(--off-white);
 }
+#loginTitle{
+    letter-spacing: 10px;
+    text-underline-offset: 10px;
+    background: -webkit-linear-gradient(10deg, var(--monitor-gray), var(--hosptial-white));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 0 var(--monitor-gray);
+}
 
 .fadeInRight{
     animation: fadeInRight 3.2s;
@@ -66,15 +74,12 @@ video {
         transform: translate(-50%, -50%);
     }
 }
-
 .fadeIn{
     animation: fadeIn 2s;
 }
 .fadeOut{
     animation: fadeOut 2s;
 }
-
-
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
@@ -84,15 +89,12 @@ video {
     100% { opacity: 0; }
 }
 
-@keyframes shine{
-    10% {
-        opacity: 1;
-        transition-property: left, top, opacity;
-        transition-duration: 0.7s, 0.7s, 0.15s;
-        transition-timing-function: ease;
-    }
-    100% {
-        opacity: 0;
-        transition-property: left, top, opacity;
-    }
+
+#houseSquare {
+    border : 2px solid var(--legal-black);
+    padding: 5px 10px 5px 10px;
+    margin-right: 5px;
+    line-height: 0;
+    letter-spacing: normal;
 }
+

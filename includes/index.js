@@ -3,40 +3,53 @@ function showLogin(event) {
     let video = document.getElementById("introVid");
 
     if (event.currentTime >= 4.3) {
-        Promise.resolve().then(() => {
-            video.classList.add("blurVideo");
-            login.style.display = "block";
-            login.classList.add("fadeInRight");
-        }).catch(reject => {
-            login.style.display = "block";
-        });
+        video.classList.add("blurVideo");
+        login.style.display = "block";
+        login.classList.add("fadeInRight");
     }
 }
 
-document.getElementById("loginButton").addEventListener("click", () => {
-    let username = document.getElementById("username").value;
-    verifyLogin(username);
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("loginButton").addEventListener("click", () => {
+        let username = document.getElementById("username").value;
+        verifyLogin(username);
+    });
 });
+function verifyLogin (username) {
+    let loginMessage = document.getElementById("loginText");
+    let userFound = false;
 
-function verifyLogin(username) {
-
-    if (username !== "[a-zA-Z0-9]+") {
-        alert("Please enter a valid username.");
-    }
     for (let i = 0; i < users.length; i++) {
-        if (username === users[i].userName || username === users[i].userName.toLowerCase()){
-            if (users[i].roleIndicator === true) {
-                alert(`Welcome ${users[i].fName} ${users[i].lName}. You have successfully logged in as an admin.`);
-                return true;
-            } else {
-                alert(`Welcome ${users[i].fName} ${users[i].lName}. You have successfully logged in as a user.`);
-                return true;
-            }
+        if (username === users[i].username){
+            userFound = true;
+            loginMessage.classList.add("fadeTextIn");
+            loginMessage.innerText = `${users[i].fName} ${users[i].lName}`;
+            break;
+        } else {
+            loginMessage.classList.add("fadeTextIn");
+            loginMessage.style.color = "red";
+            loginMessage.innerText = "User not found";
         }
     }
-    alert("Please enter a valid username.");
-    return false;
 }
+
+function userView(result) {
+    video = document.getElementById("introVid");
+    video.pause();
+
+
+    if (result === true) {
+        let userView = document.getElementById("userView");
+
+        userView.style.display = "block";
+        login.style.display = "none";
+
+    } else {
+        login.style.display = "block";
+    }
+}
+
 
 class User {
     constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId) {
@@ -72,12 +85,12 @@ class User {
         this._email = value;
     }
 
-    get userName() {
-        return this._userName;
+    get username() {
+        return this._username;
     }
 
-    set userName(value) {
-        this._userName = value;
+    set username(value) {
+        this._username = value;
     }
 
     get roleIndicator() {
