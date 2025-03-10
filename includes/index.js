@@ -86,7 +86,7 @@ function userView (userFound) {
     masonry.innerHTML += `
         <div class="col-sm-6 col-lg-4 mb-4">
                 <div class="card p-3">
-                    <div class="circle mx-auto"><img src="images/${userFound.visualId}" class="card-img-top rounded-circle " alt="a picture of ${userFound.fName} ${userFound.lName})"></div>
+                    <div class="circle mx-auto"><img src="includes/assets/${userFound.visualId}.jpg" class="card-img-top" alt="a picture of ${userFound.fName} ${userFound.lName})"></div>
                     <div class="card-body">
                         <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
                         <p class="card-text"></p>
@@ -96,11 +96,14 @@ function userView (userFound) {
           </div>
     `;
     if (userFound.roleIndicator === true) {
-        for (let user in users) {
+        //if admin show all users
+        for (let i = 0; i < users.length; i++) {
+            let user = users[i];
+            if(user !== userFound){
             masonry.innerHTML += `
         <div class="col-sm-6 col-lg-4 mb-4">
                 <div class="card p-3">
-                    <div class="circle mx-auto"><img src="images/${user.visualId}" class="card-img-top rounded-circle " alt="a picture of ${user.fName} ${user.lName})"></div>
+                    <div class="circle mx-auto"><img src="includes/assets/${user.visualId}.jpg" class="card-img-top" alt="a picture of ${user.fName} ${user.lName})"></div>
                     <div class="card-body">
                         <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
                         <p class="card-text">user.description</p>
@@ -108,37 +111,31 @@ function userView (userFound) {
                     </div>
                 </div>
           </div>
+          
     `;
+            }
         }
     } else{
-        for (let admin in users.roleIndicator) {
+        //Else only show the user and admins
+        for (let i = 0; i < users.length; i++) {
+            let admin = users[i]
+            if (admin.roleIndicator === true) {
             masonry.innerHTML += `
-        <div class="col-sm-6 col-lg-4 mb-4">
-                <div class="card p-3">
-                    <div class="circle mx-auto"><img src="images/${user.visualId}" class="card-img-top rounded-circle " alt="a picture of ${user.fName} ${user.lName})"></div>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                        <p class="card-text">user.description</p>
-                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                    </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                        <div class="card p-3">
+                            <div class="circle mx-auto"><img src="includes/assets/${admin.visualId}.jpg" class="card-img-top" alt="a picture of ${admin.fName} ${admin.lName})"></div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">${admin.fName} ${admin.lName}</h5>
+                                <p class="card-text">user.description</p>
+                                <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                            </div>
+                        </div>
                 </div>
-          </div>
-    `;
+            `;
+            }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -203,9 +200,9 @@ class User {
     }
 }
 
-const house = new User("Gregory", "House", "ghouse@pptch.org", "Monstertrucksrcool", true, "ghouseVID");
-const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true, "jwilsonVID");
-const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "lcuddyVID");
+const house = new User("Gregory", "House", "ghouse@pptch.org", "Monstertrucksrcool", true, "houseVID");
+const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true, "wilsonVID");
+const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "cuddyVID");
 const foreman = new User("Eric", "Foreman", "eforeman@pptch.org", "eForeman", false, "foremanVID");
 const cameron = new User("Allison", "Cameron", "acameron@pptch.org", "2nice4you", false, "cameronVID");
 const chase = new User("Robert", "Chase", "rchase@pptch.org", "nineisfine", false, "chaseVID");
