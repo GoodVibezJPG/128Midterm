@@ -74,6 +74,8 @@ function verifyLogin (username) {
 }
 
 
+
+
 function userView (userFound) {
     let userView = document.getElementById("userView");
     document.getElementById("introVid").pause();
@@ -85,49 +87,50 @@ function userView (userFound) {
     masonry.innerHTML = "";
     masonry.innerHTML += `
         <div class="col-sm-6 col-lg-4 mb-4">
-                <div class="card p-3">
-                    <div class="circle mx-auto"><img src="includes/assets/${userFound.visualId}.jpg" class="card-img-top" alt="a picture of ${userFound.fName} ${userFound.lName})"></div>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
-                        <p class="card-text"></p>
-                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                    </div>
+            <div class="card">
+                <div class="mx-auto d-block card-img-top"><img src="includes/assets/${userFound.visualId}.jpg" alt="a picture of ${userFound.fName} ${userFound.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                <div class="card-body">
+                <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
+                <p class="card-text"></p>
+                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                 </div>
+            </div>
           </div>
-    `;
+        `;
+
     if (userFound.roleIndicator === true) {
         //if admin show all users
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             if(user !== userFound){
             masonry.innerHTML += `
-        <div class="col-sm-6 col-lg-4 mb-4">
-                <div class="card p-3">
-                    <div class="circle mx-auto"><img src="includes/assets/${user.visualId}.jpg" class="card-img-top" alt="a picture of ${user.fName} ${user.lName})"></div>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                        <p class="card-text">user.description</p>
-                        <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                    </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                                <p class="card-text">user.description</p>
+                                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                            </div>
+                        </div>
                 </div>
-          </div>
-          
-    `;
+                
+            `;
             }
         }
-    } else{
+    } else {
         //Else only show the user and admins
         for (let i = 0; i < users.length; i++) {
             let user = users[i]
             if (user.roleIndicator === true) {
             masonry.innerHTML += `
                 <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card p-3">
-                            <div class="circle mx-auto"><img src="includes/assets/${user.visualId}.jpg" class="card-img-top" alt="a picture of ${user.fName} ${user.lName})"></div>
+                        <div class="card">
+                            <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
                                 <p class="card-text">user.description</p>
-                                <a href="#" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
+                                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                             </div>
                         </div>
                 </div>
@@ -135,8 +138,16 @@ function userView (userFound) {
             }
         }
     }
-}
 
+    //This fixed my masonry layout 
+    const grid = document.getElementById("masonryRow");
+    imagesLoaded(grid, function() {
+        new Masonry(grid, {
+            itemSelector: '.col-sm-6',
+            percentPosition: true
+        });
+    });
+}
 
 
 

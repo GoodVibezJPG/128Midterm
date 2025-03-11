@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="includes/style.css">
     <!-- JavaScript -->
     <script src="includes/index.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
     <title>Midterm Project</title>
 </head>
 <body>
 <section id="heroPage">
     <div class="container">
-        <video id="introVid" ontimeupdate="showLogin(this)" autoplay>
+        <video id="introVid" ontimeupdate="showLogin(this)" autoplay loop>
             <source src="includes/assets/HouseTheme.mp4" type="video/mp4">
             L Browser 
         </video>
@@ -37,15 +38,18 @@
 
 <section id="userView" style="height: auto;">
     <div id="masonryContainer"class="container my-5">
-        <div id="masonryRow" class="row d-flex" data-masonry='{"percentPosition": true }'>
+        <div id="masonryRow" class="row d-flex" data-masonry='{"percentPosition": true}'>
         </div>
     </div>
 </section>
 
-<footer>
-
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- <footer class="bg-body-tertiary text-center">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2020 Copyright:
+      <a class="text-body" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+</footer> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 </body>
 </html>
