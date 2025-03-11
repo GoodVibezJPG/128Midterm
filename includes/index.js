@@ -94,7 +94,7 @@ function userView (userFound) {
                 <div class="mx-auto d-block card-img-top"><img src="includes/assets/${userFound.visualId}.jpg" alt="a picture of ${userFound.fName} ${userFound.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                 <div class="card-body rounded-0">
                 <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
-                <p class="card-text">user.description</p>
+                <p class="card-text">${userFound.description}</p>
                 <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                 </div>
             </div>
@@ -102,7 +102,8 @@ function userView (userFound) {
         `;
 
     if (userFound.roleIndicator === true) {
-        //if admin show all users
+        //if admin show all users and ability to delete users
+        
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             if(user !== userFound){
@@ -112,7 +113,7 @@ function userView (userFound) {
                             <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                                <p class="card-text">user.description</p>
+                                <p class="card-text">${user.description}</p>
                                 <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                             </div>
                         </div>
@@ -132,7 +133,7 @@ function userView (userFound) {
                             <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                                <p class="card-text">user.description</p>
+                                <p class="card-text">${user.description}</p>
                                 <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                             </div>
                         </div>
@@ -155,8 +156,9 @@ function userView (userFound) {
 
 
 
+
 class User {
-    constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId) {
+    constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId, _description) {
         this._fName = _fName;
         this._lName = _lName;
         this._email = _email;
@@ -212,9 +214,16 @@ class User {
     set visualId(value) {
         this._visualId = value;
     }
+
+    get description() {
+        return this._description;
+    }
+    set description(value) {
+        this._description = value;
+    }
 }
 
-const house = new User("Gregory", "House", "ghouse@pptch.org", "Monstertrucksrcool", true, "houseVID");
+const house = new User("Gregory", "House", "ghouse@pptch.org", "speedDemon", true, "houseVID");
 const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true, "wilsonVID");
 const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "cuddyVID");
 const foreman = new User("Eric", "Foreman", "eforeman@pptch.org", "eForeman", false, "foremanVID");
@@ -234,4 +243,19 @@ let users = [
     house, wilson, cuddy, foreman, cameron, chase, thirteen, taub, kutner, adams, park, tritter, lucas, vogler, amber
 ];
 
-// user._description
+//User Descriptions
+house.description = "Everybody lies."
+wilson.description = "The health department. They frown on topless oncology."
+cuddy.description = "Okay, let's just get this patient healthy. I want her going out the front door and not the back."
+foreman.description = "This vexes me"
+cameron.description = "I miss my dead husband."
+chase.description = "Dogs can learn things, House can't."
+thirteen.description = "I go both ways."
+taub.description = "I hate my wife."
+kutner.description = "I'm just a chill guy"
+adams.description = "Hello im a doctor"
+park.description = "I am also a doctor" 
+tritter.description = "I hate bullies"
+lucas.description = "I can lie, but im not good at it"
+vogler.description = "💰💰💰"
+amber.description = "What color was my necklace?"
