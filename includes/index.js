@@ -81,7 +81,10 @@ function userView (userFound) {
     document.getElementById("introVid").pause();
     document.getElementById("heroPage").style.display = "none";
 
+    document.getElementById("navbar").style.display = "block";
+    userView.classList.add("fadeIn");
     userView.style.display = "block";
+
 
     let masonry = document.getElementById("masonryRow");
     masonry.innerHTML = "";

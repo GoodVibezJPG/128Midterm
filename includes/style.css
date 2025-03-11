@@ -26,12 +26,18 @@ footer{
     background-color: var(--monitor-gray);
     color: var(--off-white);
 }
+#navbar{
+    display: none;
+}
+#houseMDLogo{
+    filter: invert(1);
+}
 
 
 
 input{
    background-color: var(--hosptial-white); 
-   color: var(--legal-black);
+   color: var(--legal-#black);
 }
 
 .errorText{
