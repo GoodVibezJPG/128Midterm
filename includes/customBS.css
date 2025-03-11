@@ -1,0 +1,41 @@
+/* CSS HEX */
+:root {
+    --monitor-gray: #3C3C3C;
+    --hospital-gown: #778899;
+    --bedpan-gray: #6C757D;
+    --overhang-yellow: #F0E68C;
+    --siren-red: #D35400;
+
+    --off-white: #e3d8cb;
+    --hosptial-white: #F7F7F7;
+    --legal-black: #1B1212;
+    --coffee-brown: #483C32;
+    --orange: #CC7722;
+
+    --page-font: 'Trebuchet MS', sans-serif;
+}
+
+
+.card{
+    background: linear-gradient(135deg, var(--monitor-gray), var(--legal-black) 90%);
+    color: var(--hosptial-white);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.text-body-secondary{
+    color: var(--off-white);
+}
+.card-title{
+    text-transform: uppercase;
+}
+
+.btn-primary{
+    background-color: var(--siren-red);
+    border: var(--siren-red);
+    border-radius: 0px;
+}
+.btn-primary:hover{
+    background-color: var(--orange);
+}
+.btn-primary.btn-primary:focus{
+    background-color: var(--orange);
+}

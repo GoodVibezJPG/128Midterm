@@ -9,13 +9,35 @@
     --off-white: #e3d8cb;
     --hosptial-white: #F7F7F7;
     --legal-black: #000000;
+    --orange: #CC7722;
 
-    --page-font: 'century gothic', sans-serif;
+    --page-font: 'Trebuchet MS', sans-serif;
 }
+
+* {
+    font-family: var(--page-font);
+}
+
 
 body {
-    background-color: var(--hospital-gown);
+    background-color: var(--off-white);
 }
+footer{
+    background-color: var(--monitor-gray);
+    color: var(--off-white);
+}
+
+
+
+input{
+   background-color: var(--hosptial-white); 
+   color: var(--legal-black);
+}
+
+.errorText{
+    color: #A52A2A;
+}
+
 
 
 video {
@@ -56,28 +78,26 @@ video {
 #loginTitle{
     letter-spacing: 10px;
     text-underline-offset: 10px;
-    background: -webkit-linear-gradient(10deg, var(--monitor-gray), var(--hosptial-white));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 0 var(--monitor-gray);
 }
 
 #houseSquare {
-    border : 2px solid var(--legal-black);
+    border : 2px solid var(--hosptial-white);
     padding: 5px 10px 5px 10px;
     margin-right: 7px;
     line-height: 0;
     letter-spacing: normal;
 }
 
-.card-image-top{
+
+.card{
+    overflow: hidden;
+}
+.card-img-top{
     transition: transform 0.5s ease;
 }
-.card-image-top:hover {
-    transform: scale(1.1);
+.card-img-top:hover {
+    transform: scale(1.05);
 }
-
-
 .fadeInRight{
     animation: fadeInRight 3.2s;
 }

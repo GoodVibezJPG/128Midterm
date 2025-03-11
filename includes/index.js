@@ -59,7 +59,7 @@ function verifyLogin (username) {
             stupidCounter++;
             loginMessage.innerText = e.message;
             loginMessage.style.color = "red";
-            loginMessage.classList.add("text-warning");
+            loginMessage.classList.add("errorText");
             loginMessage.classList.add("shake");
             setTimeout(() => {
                 loginMessage.classList.remove("shake");
@@ -87,11 +87,11 @@ function userView (userFound) {
     masonry.innerHTML = "";
     masonry.innerHTML += `
         <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card">
+            <div class="card rounded-0">
                 <div class="mx-auto d-block card-img-top"><img src="includes/assets/${userFound.visualId}.jpg" alt="a picture of ${userFound.fName} ${userFound.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                <div class="card-body">
+                <div class="card-body rounded-0">
                 <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
-                <p class="card-text"></p>
+                <p class="card-text">user.description</p>
                 <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
                 </div>
             </div>
@@ -105,7 +105,7 @@ function userView (userFound) {
             if(user !== userFound){
             masonry.innerHTML += `
                 <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
@@ -125,7 +125,7 @@ function userView (userFound) {
             if (user.roleIndicator === true) {
             masonry.innerHTML += `
                 <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
