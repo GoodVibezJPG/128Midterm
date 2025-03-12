@@ -302,9 +302,10 @@ document.addEventListener("DOMContentLoaded", () => {
     //Async arrow func
     document.getElementById("loginButton").addEventListener("click", async () => {
         let username = document.getElementById("username").value;
+        // these were originally then ables but this works too, probably better 
         try {
             const response = await verifyLogin(username);
-            //After the login message, show userview
+            //After the login message 2.5s, show userview
             setTimeout(() => {
                 userView(response);
             }, 2500);
@@ -324,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
         video.currentTime = 0;
         video.muted = false;
         video.classList.remove("blurVideo");
-        loginMessage.innerText = "Login with Username or Email";
+        loginMessage.innerText = ("Login with Username or Email");
         loginMessage.style.color = ("#e3d8cb");
         loginMessage.classList.remove("errorText");
         loginMessage.classList.remove("fadeTextIn");
