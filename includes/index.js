@@ -69,7 +69,7 @@ const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true,
 const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "cuddyVID");
 const foreman = new User("Eric", "Foreman", "eforeman@pptch.org", "eForeman", false, "foremanVID");
 const cameron = new User("Allison", "Cameron", "acameron@pptch.org", "2nice4you", false, "cameronVID");
-const chase = new User("Robert", "Chase", "rchase@pptch.org", "nineisfine", false, "chaseVID");
+const chase = new User("Robert", "Chase", "rchase@pptch.org", "aussie", false, "chaseVID");
 const thirteen = new User("Remy", "Hadley", "rhadley@pptch.org", "thirteen", false, "thirteenVID");
 const taub = new User("Chris", "Taub", "ctaub@pptch.org", "plasticman", false, "taubVID");
 const kutner = new User("Lawrence", "Kutner", "lkutner@pptch.org", "chillguy", false, "kutnerVID");
@@ -80,6 +80,7 @@ const lucas = new User("Lucas", "Douglas", "lucasPI@yahoo.com", "PrivateGuy", fa
 const vogler = new User("Edward", "Vogler", "evogler@money.net", "moneybags", false, "voglerVID");
 const amber = new User("Amber", "Volakis", "avolakis@heaven.edu", "xthroatb", false, "amberVID");
 
+// array of user objects
 let users = [
     house, wilson, cuddy, foreman, cameron, chase, thirteen, taub, kutner, adams, park, tritter, lucas, vogler, amber
 ];
@@ -107,8 +108,10 @@ amber.description = "What color was my necklace?"
 function showLogin(event) {
     let login = document.getElementById("loginCard");
     let video = document.getElementById("introVid");
+    //turn it down a little bit
     video.volume = 0.5;
         
+    //On the weee, fly fade in
     if (event.currentTime >= 4.3) {
         video.classList.add("blurVideo");
         login.style.display = "block";
@@ -121,25 +124,30 @@ function showLogin(event) {
 }
 
 
+//Houses stupid counter
 let stupidCounter = 0;
+//Verify login from the username
 async function verifyLogin (username) {
     let loginMessage = document.getElementById("loginText");
     let houseInsult = document.getElementById("houseInsult");
 
+    //Resolve or reject on user login
     return new Promise((resolve, reject) => {
         try{
-            if (!/^[a-zA-Z0-9.-_ ]*$/.test(username)) {
+            //no injections Regex
+            if (!/^[a-zA-Z0-9.-_ @]*$/.test(username)) {
                 throw new Error("Invalid characters");
             }
-            if (username.length < 5 || username.length > 20) {
+            //wrong length
+            if (username.length < 5 || username.length > 25) {
                 throw new Error("Invalid Username Length.");
             }
             for (let i = 0; i < users.length; i++) {
-                if (username.toLowerCase() === users[i].username.toLowerCase()) {
+                if (username.toLowerCase() === users[i].username.toLowerCase() || username.toLowerCase() === users[i].email.toLowerCase()) {
                     //Unique login for certain users
                     switch (username) {
                         case house.username:
-                            loginMessage.innerText = `Welcome back Dr. ${users[i].lName}`;
+                            loginMessage.innerText = `Everybody lies, except your login. Welcome back Dr. ${users[i].lName}`;
                             break;
                         case wilson.username:
                             loginMessage.innerText = `Dr. ${users[i].lName}, welcome back.`;
@@ -176,6 +184,7 @@ async function verifyLogin (username) {
                 loginMessage.classList.remove("errorText");
                 loginMessage.classList.remove("shake");
             }, 600);
+            //House calls you stupid if you get 3 wrong
             if(stupidCounter === 3){
                 houseInsult.play();
                 stupidCounter = 0;
@@ -206,11 +215,11 @@ async function userView (userFound) {
                 <div class="card-body rounded-0">
                     <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
                     <p class="card-text">${userFound.description}</p>
+                    <p class="card-text"><span class="fw-bold">Email: </span>${userFound.email}</p>
                 </div>
             </div>
           </div>
         `;
-
     if (userFound.roleIndicator === true) {
         //if admin show all users and ability to delete users
         for (let i = 0; i < users.length; i++) {
@@ -223,14 +232,13 @@ async function userView (userFound) {
                         <div class="card-body">
                             <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
                             <p class="card-text">${user.description}</p>
+                            <p class="card-text"><span class="fw-bold">Email: </span>${user.email}</p>
                             <a onclick="deleteUser('${user.username}')" class="btn btn-primary mx-auto " type="button">Delete User</a>
                         </div>
                     </div>
                 </div>
                 `;
             }
-        
-
         }
     } else {
         //Else only show the user and admins
@@ -244,6 +252,7 @@ async function userView (userFound) {
                         <div class="card-body">
                             <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
                             <p class="card-text">${user.description}</p>
+                            <p class="card-text"><span class="fw-bold">Email: </span>${user.email}</p>
                         </div>
                     </div>
                 </div>
@@ -253,6 +262,7 @@ async function userView (userFound) {
     }
     // Refresh the masonry layout
     // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
+    //my images were too high res... I couldnt get my masonry to work really otherwise, i dont like masonry
     const grid = document.getElementById("masonryRow");
     imagesLoaded(grid, function() {
         new Masonry(grid, {
@@ -262,18 +272,20 @@ async function userView (userFound) {
     });
 }
 
+//Delete users 
 function deleteUser(username) {
-
-
     document.getElementById("userCard" + username).remove();
     for (let i = 0; i < users.length; i++) {
         if(users[i].username === username){
+            //Delete that iteration of a user once 
             users.splice(i, 1);
+            //break out of for loop
             break;
         }
     }
     // Refresh the masonry layout
     // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
+    //my images were too high res
     const grid = document.getElementById("masonryRow");
     imagesLoaded(grid, function() {
         new Masonry(grid, {
@@ -285,12 +297,14 @@ function deleteUser(username) {
 
 
 
-//Wait for HTML to load so it doesn't break my buttons
+//Wait for HTML to load so it doesn't break my buttons DOM LOAD
 document.addEventListener("DOMContentLoaded", () => {
+    //Async arrow func
     document.getElementById("loginButton").addEventListener("click", async () => {
         let username = document.getElementById("username").value;
         try {
             const response = await verifyLogin(username);
+            //After the login message, show userview
             setTimeout(() => {
                 userView(response);
             }, 2500);
@@ -300,20 +314,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    //Revert all changes that I made to the page
+    //Revert all changes that I made to the page, i think thats all
     document.getElementById("logoutButton").addEventListener("click", () => {
         let userView = document.getElementById("userView");
         let login = document.getElementById("loginCard");
         let loginMessage = document.getElementById("loginText");
         let video = document.getElementById("introVid");
-        let houseInsult = document.getElementById("houseInsult");
 
-        houseInsult.pause();
-        houseInsult.currentTime = 0;
         video.currentTime = 0;
         video.muted = false;
         video.classList.remove("blurVideo");
-        loginMessage.innerText = "";
+        loginMessage.innerText = "Login with Username or Email";
         loginMessage.style.color = ("#e3d8cb");
         loginMessage.classList.remove("errorText");
         loginMessage.classList.remove("fadeTextIn");
