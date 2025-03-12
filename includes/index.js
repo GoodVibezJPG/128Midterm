@@ -136,6 +136,7 @@ async function verifyLogin (username) {
             }
             for (let i = 0; i < users.length; i++) {
                 if (username.toLowerCase() === users[i].username.toLowerCase()) {
+                    //Unique login for certain users
                     switch (username) {
                         case house.username:
                             loginMessage.innerText = `Welcome back Dr. ${users[i].lName}`;
@@ -205,7 +206,6 @@ async function userView (userFound) {
                 <div class="card-body rounded-0">
                     <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
                     <p class="card-text">${userFound.description}</p>
-                    <a href="#" class="btn btn-primary mx-auto" type="button">Go somewhere</a>
                 </div>
             </div>
           </div>
@@ -213,23 +213,24 @@ async function userView (userFound) {
 
     if (userFound.roleIndicator === true) {
         //if admin show all users and ability to delete users
-        
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
             if(user !== userFound){
-            masonry.innerHTML += `
-            <div class="col-sm-6 col-lg-4 mb-4">
-                <div class="card rounded-0">
-                    <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                        <p class="card-text">${user.description}</p>
-                        <a href="#" id="${user._lName}deleteButton" class="btn btn-primary mx-auto" type="button">Go somewhere</a>
+                masonry.innerHTML += `
+                <div class="col-sm-6 col-lg-4 mb-4" id="userCard${user.username}">
+                    <div class="card rounded-0">
+                        <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                            <p class="card-text">${user.description}</p>
+                            <a onclick="deleteUser('${user.username}')" class="btn btn-primary mx-auto " type="button">Delete User</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            `;
+                `;
             }
+        
+
         }
     } else {
         //Else only show the user and admins
@@ -250,7 +251,8 @@ async function userView (userFound) {
             }
         }
     }
-    //This fixed my masonry layout 
+    // Refresh the masonry layout
+    // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
     const grid = document.getElementById("masonryRow");
     imagesLoaded(grid, function() {
         new Masonry(grid, {
@@ -260,6 +262,26 @@ async function userView (userFound) {
     });
 }
 
+function deleteUser(username) {
+
+
+    document.getElementById("userCard" + username).remove();
+    for (let i = 0; i < users.length; i++) {
+        if(users[i].username === username){
+            users.splice(i, 1);
+            break;
+        }
+    }
+    // Refresh the masonry layout
+    // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
+    const grid = document.getElementById("masonryRow");
+    imagesLoaded(grid, function() {
+        new Masonry(grid, {
+            itemSelector: '.col-sm-6',
+            percentPosition: true
+        });
+    });
+}
 
 
 
@@ -292,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
         video.muted = false;
         video.classList.remove("blurVideo");
         loginMessage.innerText = "";
-        loginMessage.style.color = "black";
+        loginMessage.style.color = ("#e3d8cb");
         loginMessage.classList.remove("errorText");
         loginMessage.classList.remove("fadeTextIn");
         loginMessage.classList.remove("shake");

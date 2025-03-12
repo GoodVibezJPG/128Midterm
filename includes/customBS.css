@@ -39,3 +39,6 @@
 .btn-primary.btn-primary:focus{
     background-color: var(--orange);
 }
+.btn-primary:active{
+    background-color: var(--orange);
+}
