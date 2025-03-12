@@ -181,6 +181,7 @@ async function verifyLogin (username) {
             loginMessage.classList.add("errorText");
             loginMessage.classList.add("shake");
             setTimeout(() => {
+                loginMessage.style.color = ("#e3d8cb");
                 loginMessage.classList.remove("errorText");
                 loginMessage.classList.remove("shake");
             }, 600);
@@ -194,7 +195,7 @@ async function verifyLogin (username) {
     });
 }
 
-async function userView (userFound) {
+async function userView (userFound) {   
     let userView = document.getElementById("userView");
     //Pause the video so it doesnt make noise, ande hide heroPAge, and show our userView
     document.getElementById("introVid").pause();
