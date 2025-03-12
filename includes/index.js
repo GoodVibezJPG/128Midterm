@@ -1,162 +1,3 @@
-
-
-function showLogin(event) {
-    let login = document.getElementById("loginCard");
-    let video = document.getElementById("introVid");
-    video.volume = 0.5;
-        
-    if (event.currentTime >= 4.3) {
-        video.classList.add("blurVideo");
-        login.style.display = "block";
-        login.classList.add("fadeInRight");
-    }
-    video.onended = () => {
-        video.muted = true;
-    };
-
-    video.onerror = () => {
-        video.style.display = "none";
-        document.getElementById("heroPage").style.backgroundImage = "url('assets/houseBackground.jpg')";
-        login.style.display = "block";
-        login.classList.add("fadeInRight");
-    };
-
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("loginButton").addEventListener("click", () => {
-        let username = document.getElementById("username").value;
-        verifyLogin(username)
-            .then((userFound) => {userView(userFound);})
-            .catch((error) => {console.log(error);})
-    });
-});
-
-let stupidCounter = 0;
-function verifyLogin (username) {
-    let loginMessage = document.getElementById("loginText");
-    let houseInsult = document.getElementById("houseInsult");
-
-    return new Promise((resolve, reject) => {
-        try{
-            if (!/^[a-zA-Z0-9.-_ ]*$/.test(username)) {
-                throw new Error("Invalid characters");
-            }
-            if (username.length < 5 || username.length > 20) {
-                throw new Error("Invalid Username Length.");
-            }
-            for (let i = 0; i < users.length; i++) {
-                if (username === users[i].username){
-                    loginMessage.classList.add("fadeTextIn");
-                    loginMessage.innerText = `Welcome ${users[i].fName} ${users[i].lName}`;
-                    resolve(users[i]);
-                    break;
-                }
-            }
-            throw new Error("Username not found");
-
-        } catch (e) {
-            stupidCounter++;
-            loginMessage.innerText = e.message;
-            loginMessage.style.color = "red";
-            loginMessage.classList.add("errorText");
-            loginMessage.classList.add("shake");
-            setTimeout(() => {
-                loginMessage.classList.remove("shake");
-            }, 600);
-            if(stupidCounter === 3){
-                houseInsult.play();
-                stupidCounter = 0;
-            }
-            reject(e);
-        }
-    });
-}
-
-
-
-
-function userView (userFound) {
-    let userView = document.getElementById("userView");
-    document.getElementById("introVid").pause();
-    document.getElementById("heroPage").style.display = "none";
-
-    document.getElementById("navbar").style.display = "block";
-    userView.classList.add("fadeIn");
-    userView.style.display = "block";
-
-
-    let masonry = document.getElementById("masonryRow");
-    masonry.innerHTML = "";
-    masonry.innerHTML += `
-        <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card rounded-0">
-                <div class="mx-auto d-block card-img-top"><img src="includes/assets/${userFound.visualId}.jpg" alt="a picture of ${userFound.fName} ${userFound.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                <div class="card-body rounded-0">
-                <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
-                <p class="card-text">${userFound.description}</p>
-                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                </div>
-            </div>
-          </div>
-        `;
-
-    if (userFound.roleIndicator === true) {
-        //if admin show all users and ability to delete users
-        
-        for (let i = 0; i < users.length; i++) {
-            let user = users[i];
-            if(user !== userFound){
-            masonry.innerHTML += `
-                <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card rounded-0">
-                            <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                            <div class="card-body">
-                                <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                                <p class="card-text">${user.description}</p>
-                                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                            </div>
-                        </div>
-                </div>
-                
-            `;
-            }
-        }
-    } else {
-        //Else only show the user and admins
-        for (let i = 0; i < users.length; i++) {
-            let user = users[i]
-            if (user.roleIndicator === true) {
-            masonry.innerHTML += `
-                <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card rounded-0">
-                            <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                            <div class="card-body">
-                                <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                                <p class="card-text">${user.description}</p>
-                                <a href="#" class="btn btn-primary mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">>Go somewhere</a>
-                            </div>
-                        </div>
-                </div>
-            `;
-            }
-        }
-    }
-
-    //This fixed my masonry layout 
-    const grid = document.getElementById("masonryRow");
-    imagesLoaded(grid, function() {
-        new Masonry(grid, {
-            itemSelector: '.col-sm-6',
-            percentPosition: true
-        });
-    });
-}
-
-
-
-
-
 class User {
     constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId, _description) {
         this._fName = _fName;
@@ -249,7 +90,7 @@ wilson.description = "The health department. They frown on topless oncology."
 cuddy.description = "Okay, let's just get this patient healthy. I want her going out the front door and not the back."
 foreman.description = "This vexes me"
 cameron.description = "I miss my dead husband."
-chase.description = "Dogs can learn things, House can't."
+chase.description = "Fair dinkum, this is as crook as a kangaroo's back leg!"
 thirteen.description = "I go both ways."
 taub.description = "I hate my wife."
 kutner.description = "I'm just a chill guy"
@@ -259,3 +100,212 @@ tritter.description = "I hate bullies"
 lucas.description = "I can lie, but im not good at it"
 vogler.description = "💰💰💰"
 amber.description = "What color was my necklace?"
+
+
+
+
+function showLogin(event) {
+    let login = document.getElementById("loginCard");
+    let video = document.getElementById("introVid");
+    video.volume = 0.5;
+        
+    if (event.currentTime >= 4.3) {
+        video.classList.add("blurVideo");
+        login.style.display = "block";
+        login.classList.add("fadeInRight");
+    }
+    //After first loop mute
+    video.onended = () => {
+        video.muted = true;
+    };
+}
+
+
+let stupidCounter = 0;
+async function verifyLogin (username) {
+    let loginMessage = document.getElementById("loginText");
+    let houseInsult = document.getElementById("houseInsult");
+
+    return new Promise((resolve, reject) => {
+        try{
+            if (!/^[a-zA-Z0-9.-_ ]*$/.test(username)) {
+                throw new Error("Invalid characters");
+            }
+            if (username.length < 5 || username.length > 20) {
+                throw new Error("Invalid Username Length.");
+            }
+            for (let i = 0; i < users.length; i++) {
+                if (username.toLowerCase() === users[i].username.toLowerCase()) {
+                    switch (username) {
+                        case house.username:
+                            loginMessage.innerText = `Welcome back Dr. ${users[i].lName}`;
+                            break;
+                        case wilson.username:
+                            loginMessage.innerText = `Dr. ${users[i].lName}, welcome back.`;
+                            break;
+                        case cuddy.username:
+                            loginMessage.innerText = `Welcome the boss ${users[i].fName} ${users[i].lName}`;
+                            break;
+                        case foreman.username:
+                            loginMessage.innerText = `Welcome the vexed ${users[i].fName} ${users[i].lName}`;
+                            break;
+                        case chase.username:
+                            loginMessage.innerText = `G'Day Mate ${users[i].fName} ${users[i].lName}`;
+                            break;
+                        case thirteen.username:
+                            loginMessage.innerText = `Who are you? Oh welcome back 13.`;
+                            break;
+                        case tritter.username:
+                            loginMessage.innerText = `Welcome detective ${users[i].fName} ${users[i].lName}`;
+                            break;
+                        default:
+                            loginMessage.innerText = `Welcome ${users[i].fName} ${users[i].lName}`;
+                    }
+                    loginMessage.classList.add("fadeIn");
+                    return resolve(users[i]);
+                }
+            }
+            throw new Error("Username not found");
+        } catch (e) {
+            stupidCounter++;
+            loginMessage.style.color = "red";
+            loginMessage.classList.add("errorText");
+            loginMessage.classList.add("shake");
+            setTimeout(() => {
+                loginMessage.classList.remove("errorText");
+                loginMessage.classList.remove("shake");
+            }, 600);
+            if(stupidCounter === 3){
+                houseInsult.play();
+                stupidCounter = 0;
+            }
+            return reject(e);
+        }
+    });
+}
+
+async function userView (userFound) {
+    let userView = document.getElementById("userView");
+    //Pause the video so it doesnt make noise, ande hide heroPAge, and show our userView
+    document.getElementById("introVid").pause();
+    document.getElementById("heroPage").style.display = "none";
+
+    document.getElementById("navbar").style.display = "block";
+    userView.classList.add("fadeIn");
+    userView.style.display = "block";
+
+
+    let masonry = document.getElementById("masonryRow");
+    //Show user logged in as first user
+    masonry.innerHTML = "";
+    masonry.innerHTML += `
+        <div class="col-sm-6 col-lg-4 mb-4">
+            <div class="card rounded-0">
+                <div class="mx-auto d-block card-img-top"><img src="includes/assets/${userFound.visualId}.jpg" alt="a picture of ${userFound.fName} ${userFound.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                <div class="card-body rounded-0">
+                    <h5 class="card-title text-center">${userFound.fName} ${userFound.lName}</h5>
+                    <p class="card-text">${userFound.description}</p>
+                    <a href="#" class="btn btn-primary mx-auto" type="button">Go somewhere</a>
+                </div>
+            </div>
+          </div>
+        `;
+
+    if (userFound.roleIndicator === true) {
+        //if admin show all users and ability to delete users
+        
+        for (let i = 0; i < users.length; i++) {
+            let user = users[i];
+            if(user !== userFound){
+            masonry.innerHTML += `
+            <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card rounded-0">
+                    <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                        <p class="card-text">${user.description}</p>
+                        <a href="#" id="${user._lName}deleteButton" class="btn btn-primary mx-auto" type="button">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            `;
+            }
+        }
+    } else {
+        //Else only show the user and admins
+        for (let i = 0; i < users.length; i++) {
+            let user = users[i]
+            if (user.roleIndicator === true) {
+            masonry.innerHTML += `
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card rounded-0">
+                        <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
+                            <p class="card-text">${user.description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+        }
+    }
+    //This fixed my masonry layout 
+    const grid = document.getElementById("masonryRow");
+    imagesLoaded(grid, function() {
+        new Masonry(grid, {
+            itemSelector: '.col-sm-6',
+            percentPosition: true
+        });
+    });
+}
+
+
+
+
+//Wait for HTML to load so it doesn't break my buttons
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("loginButton").addEventListener("click", async () => {
+        let username = document.getElementById("username").value;
+        try {
+            const response = await verifyLogin(username);
+            setTimeout(() => {
+                userView(response);
+            }, 2500);
+        } catch (error){
+            document.getElementById("loginText").innerText = (error);
+        }
+    });
+
+
+    //Revert all changes that I made to the page
+    document.getElementById("logoutButton").addEventListener("click", () => {
+        let userView = document.getElementById("userView");
+        let login = document.getElementById("loginCard");
+        let loginMessage = document.getElementById("loginText");
+        let video = document.getElementById("introVid");
+        let houseInsult = document.getElementById("houseInsult");
+
+        houseInsult.pause();
+        houseInsult.currentTime = 0;
+        video.currentTime = 0;
+        video.muted = false;
+        video.classList.remove("blurVideo");
+        loginMessage.innerText = "";
+        loginMessage.style.color = "black";
+        loginMessage.classList.remove("errorText");
+        loginMessage.classList.remove("fadeTextIn");
+        loginMessage.classList.remove("shake");
+        document.getElementById("username").value = "";
+        login.style.display = "none";
+        userView.style.display = "none";
+        document.getElementById("heroPage").style.display = "block";
+        document.getElementById("navbar").style.display = "none";
+        video.play();
+    });
+});
+
+
+
+
+

@@ -19,9 +19,11 @@
 <body>
 <section id="heroPage">
     <div class="container">
+        <!--JS video functionalities-->
         <video id="introVid" ontimeupdate="showLogin(this)" autoplay loop>
             <source src="includes/assets/HouseTheme.mp4" type="video/mp4">
-            L Browser 
+            Your browser does not support the video. Replace with image
+            <img src="includes/assets/houseBackground.jpg" alt="House Theme">
         </video>
         <audio id="houseInsult">
             <source src="includes/assets/houseInsult1.mp3" type="audio/mp3">
@@ -30,7 +32,7 @@
             <div class="card-body">
                 <h1 id="loginTitle" class="card-title text-uppercase mb-3"><span id="houseSquare">W</span><span class="text-decoration-underline">elcome</span></h1>
                 <label id="loginText" class="card-subtitle mb-3 h4" for="username">Login with Username</label>
-                <input type="text" class="card-text mb-3" id="username" style="width: 100%">
+                <input id="username" type="text" class="card-text mb-3"  style="width: 100%">
                 <button id="loginButton" class="btn btn-primary">Login</button>
             </div>
         </div>
@@ -50,20 +52,21 @@
     </nav>
     <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
         <div class="bg-dark p-4">
-            <button id="loginButton" class="btn btn-primary d-block mb-3">Log Out</button>
+            <!--Burger dropdown with logout button-->
+            <button id="logoutButton" class="btn btn-primary d-block mb-3">Log Out</button>
         </div>
     </div>
-
     <div id="masonryContainer"class="container my-5">
         <div id="masonryRow" class="row d-flex" data-masonry='{"percentPosition": true}'>
+            <!--users go here-->
         </div>
     </div>
-</section>
 
+</section>
 <footer class="text-center">
     <div class="text-center p-3">
-      © 2020 Copyright:
-      <a class="text-body" href="">MDBootstrap.com</a>
+        2025 Caleb Irvine
+        <img id="houseMDLogo" class="mx-2" src="/includes/assets/houseMD.png" alt="House MD" width="40" height="40">
     </div>
 </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
