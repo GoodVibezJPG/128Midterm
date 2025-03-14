@@ -19,11 +19,11 @@
 <!-- login page hero section + video -->
 <section id="heroPage">
     <div class="container">
-        <!--JS video functionalities-->
-        <video id="introVid" ontimeupdate="showLogin(this)" autoplay loop>
+        <!--HTML Audio/Video DOM Reference-->
+        <video id="introVid" ontimeupdate="showLogin(this)" autoplay loop muted>
             <source src="includes/assets/HouseTheme.mp4" type="video/mp4">
+            <img src="includes/assets/houseBackground.jpg">
             Your L browser does not support the video. Replace with image
-            <img src="includes/assets/houseBackground.jpg" alt="House Theme">
         </video>
         <!-- House insults you if you get login wrong a bunch -->
         <audio id="houseInsult">

@@ -1,7 +1,14 @@
 /**
+ * C0522047
+ * 
  * This my fan "login page" for the show House MD, it features logging in with a unique username assigned to each user, some more unique than others
  * If you login wrong three times, House calls you stupid...
  * 
+ * 15 users for 15 characters from house, each instance of the User has a unique description, and certain users have unique logins.
+ * 
+ * The usernames are: homeslice, JWilson, lCuddy, eForeman, 2nice4you, aussie, thirteen, plasticman, chillguy, adamsVID, parkVID,bullypatrol, PrivateGuy, moneybags, cutthroatb
+ * 
+ * The login card page zooms in on the 4.3 second event in the intro...
  * 
  */
 
@@ -86,7 +93,7 @@ const park = new User("Chi", "Park", "cpark@pptch.org", "cPark", false, "parkVID
 const tritter = new User("Michael", "Tritter", "mtritter@police.gov", "bullypatrol", false, "tritterVID");
 const lucas = new User("Lucas", "Douglas", "lucasPI@yahoo.com", "PrivateGuy", false, "lucasVID");
 const vogler = new User("Edward", "Vogler", "evogler@money.net", "moneybags", false, "voglerVID");
-const amber = new User("Amber", "Volakis", "avolakis@heaven.edu", "xthroatb", false, "amberVID");
+const amber = new User("Amber", "Volakis", "avolakis@heaven.edu", "cutthroatb", false, "amberVID");
 
 // array of user objects
 let users = [
@@ -116,20 +123,34 @@ amber.description = "What color was my necklace?"
 let showLogin = (event) => {
     let login = document.getElementById("loginCard");
     let video = document.getElementById("introVid");
-    //turn it down a little bit
+    let fallbackImage = document.getElementById("fallbackImage");
+
+    // Turn it down a little bit
     video.volume = 0.5;
-        
-    //On the weee, fly fade in
+
+    // On the weee, fly fade in
     if (event.currentTime >= 4.3) {
         video.classList.add("blurVideo");
         login.style.display = "block";
         login.classList.add("fadeInRight");
     }
-    //After first loop mute
+
+    // After first loop mute
     video.onended = () => {
         video.muted = true;
     };
-}
+
+    // Fallback if video doesn't load after 5 seconds
+    setTimeout(() => {
+        if (video.readyState < 3) {
+            video.style.display = "none";
+            fallbackImage.style.display = "block";
+            login.style.display = "block";
+            login.classList.add("fadeInRight");
+            document.getElementById("heroPage").style.backgroundImage("url('includes/assets/houseBackground.png')");
+        }
+    }, 5);
+};
 
 
 //Houses stupid counter
@@ -179,15 +200,18 @@ let verifyLogin = async (username) => {
                             loginMessage.innerText = `Welcome ${users[i].fName} ${users[i].lName}`;
                     }
                     loginMessage.classList.add("fadeIn");
+                    //return resolve
                     return resolve(users[i]);
                 }
             }
+            //then the user wasn't found
             throw new Error("Username not found");
         } catch (e) {
             stupidCounter++;
             loginMessage.style.color = "red";
             loginMessage.classList.add("errorText");
             loginMessage.classList.add("shake");
+            //So the login doesnt stay red and the shake still works remove after like half a second
             setTimeout(() => {
                 loginMessage.style.color = ("#e3d8cb");
                 loginMessage.classList.remove("errorText");
@@ -198,6 +222,7 @@ let verifyLogin = async (username) => {
                 houseInsult.play();
                 stupidCounter = 0;
             }
+            //Reject 😡
             return reject(e);
         }
     });
@@ -207,13 +232,14 @@ let userView = async (userFound) => {
     let userView = document.getElementById("userView");
     //Pause the video so it doesnt make noise, ande hide heroPAge, and show our userView
     document.getElementById("introVid").pause();
+    //Hide my hero and show my userview
     document.getElementById("heroPage").style.display = "none";
     document.getElementById("navbar").style.display = "block";
     userView.classList.add("fadeIn");
     userView.style.display = "block";
 
     let masonry = document.getElementById("masonryRow");
-    //Show user logged in as first user
+    //Show the user logged in as first user
     masonry.innerHTML = "";
     masonry.innerHTML += `
         <div class="col-sm-6 col-lg-4 mb-4">
@@ -229,7 +255,6 @@ let userView = async (userFound) => {
         `;
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
-    
             // Skip the logged in user since they display first
             if (user !== userFound) {
                 let deleteButton = "";
@@ -294,8 +319,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     //once video it has buffered enough to begin, please play it...
     //continue 
     video.addEventListener("canplay", () => {
-        video.play(
-        );}, { once: true });;
+        video.play();
+        //I was having issues when the HTML video was unmuted, so im kinda tricking it by unmuting in my JS when its done loading?
+        //Might be a brave browser thing?
+        video.muted = false;
+    }, 
+    { once: true });;
 
     //Async arrow func
     document.getElementById("loginButton").addEventListener("click", async () => {
