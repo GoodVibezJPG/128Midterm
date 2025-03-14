@@ -1,3 +1,11 @@
+/**
+ * This my fan "login page" for the show House MD, it features logging in with a unique username assigned to each user, some more unique than others
+ * If you login wrong three times, House calls you stupid...
+ * 
+ * 
+ */
+
+
 class User {
     constructor(_fName, _lName, _email, _userName, _roleIndicator, _visualId, _description) {
         this._fName = _fName;
@@ -64,7 +72,7 @@ class User {
     }
 }
 
-const house = new User("Gregory", "House", "ghouse@pptch.org", "speedDemon", true, "houseVID");
+const house = new User("Gregory", "House", "ghouse@pptch.org", "homeslice", true, "houseVID");
 const wilson = new User("James", "Wilson", "jwilson@pptch.org", "JWilson", true, "wilsonVID");
 const cuddy = new User("Lisa", "Cuddy", "lcuddy@apptch.org", "lCuddy", true, "cuddyVID");
 const foreman = new User("Eric", "Foreman", "eforeman@pptch.org", "eForeman", false, "foremanVID");
@@ -105,7 +113,7 @@ amber.description = "What color was my necklace?"
 
 
 
-function showLogin(event) {
+let showLogin = (event) => {
     let login = document.getElementById("loginCard");
     let video = document.getElementById("introVid");
     //turn it down a little bit
@@ -127,7 +135,7 @@ function showLogin(event) {
 //Houses stupid counter
 let stupidCounter = 0;
 //Verify login from the username
-async function verifyLogin (username) {
+let verifyLogin = async (username) => {
     let loginMessage = document.getElementById("loginText");
     let houseInsult = document.getElementById("houseInsult");
 
@@ -195,16 +203,14 @@ async function verifyLogin (username) {
     });
 }
 
-async function userView (userFound) {   
+let userView = async (userFound) => {   
     let userView = document.getElementById("userView");
     //Pause the video so it doesnt make noise, ande hide heroPAge, and show our userView
     document.getElementById("introVid").pause();
     document.getElementById("heroPage").style.display = "none";
-
     document.getElementById("navbar").style.display = "block";
     userView.classList.add("fadeIn");
     userView.style.display = "block";
-
 
     let masonry = document.getElementById("masonryRow");
     //Show user logged in as first user
@@ -221,11 +227,17 @@ async function userView (userFound) {
             </div>
           </div>
         `;
-    if (userFound.roleIndicator === true) {
-        //if admin show all users and ability to delete users
         for (let i = 0; i < users.length; i++) {
             let user = users[i];
-            if(user !== userFound){
+    
+            // Skip the logged in user since they display first
+            if (user !== userFound) {
+                let deleteButton = "";
+                //This was confusing af but it's pretty much like, oh hey if our user in the array is not an admin, and the current user is admin, the we can show the delete button
+                if (user.roleIndicator === false && userFound.roleIndicator === true){
+                    //Onclick delete that given user
+                    deleteButton = `<a id="deleteUser${user.username}" onclick="deleteUser('${user.username}')" class="btn btn-primary mx-auto" type="button">Delete User</a>`;
+                }
                 masonry.innerHTML += `
                 <div class="col-sm-6 col-lg-4 mb-4" id="userCard${user.username}">
                     <div class="card rounded-0">
@@ -234,36 +246,14 @@ async function userView (userFound) {
                             <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
                             <p class="card-text">${user.description}</p>
                             <p class="card-text"><span class="fw-bold">Email: </span>${user.email}</p>
-                            <a onclick="deleteUser('${user.username}')" class="btn btn-primary mx-auto " type="button">Delete User</a>
+                            ${deleteButton}
                         </div>
                     </div>
                 </div>
                 `;
             }
-        }
-    } else {
-        //Else only show the user and admins
-        for (let i = 0; i < users.length; i++) {
-            let user = users[i]
-            if (user.roleIndicator === true) {
-            masonry.innerHTML += `
-                <div class="col-sm-6 col-lg-4 mb-4">
-                    <div class="card rounded-0">
-                        <div class="mx-auto d-block card-img-top"><img src="includes/assets/${user.visualId}.jpg" alt="a picture of ${user.fName} ${user.lName}" style="width: 100%; height: auto; object-fit: cover;"></div>
-                        <div class="card-body">
-                            <h5 class="card-title text-center">${user.fName} ${user.lName}</h5>
-                            <p class="card-text">${user.description}</p>
-                            <p class="card-text"><span class="fw-bold">Email: </span>${user.email}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            }
-        }
-    }
-    // Refresh the masonry layout
-    // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
-    //my images were too high res... I couldnt get my masonry to work really otherwise, i dont like masonry
+        
+    //Refresh Masonry, fix
     const grid = document.getElementById("masonryRow");
     imagesLoaded(grid, function() {
         new Masonry(grid, {
@@ -271,10 +261,11 @@ async function userView (userFound) {
             percentPosition: true
         });
     });
+    }
 }
 
 //Delete users 
-function deleteUser(username) {
+let deleteUser = (username) => {
     document.getElementById("userCard" + username).remove();
     for (let i = 0; i < users.length; i++) {
         if(users[i].username === username){
@@ -284,9 +275,7 @@ function deleteUser(username) {
             break;
         }
     }
-    // Refresh the masonry layout
-    // Credit to https://imagesloaded.desandro.com/ and the stackOverflow I found to fix my masonry
-    //my images were too high res
+    // Refresh the masonry layout on delete 
     const grid = document.getElementById("masonryRow");
     imagesLoaded(grid, function() {
         new Masonry(grid, {
@@ -299,18 +288,27 @@ function deleteUser(username) {
 
 
 //Wait for HTML to load so it doesn't break my buttons DOM LOAD
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    let video = document.getElementById("introVid");
+
+    //once video it has buffered enough to begin, please play it...
+    //continue 
+    video.addEventListener("canplay", () => {
+        video.play(
+        );}, { once: true });;
+
     //Async arrow func
     document.getElementById("loginButton").addEventListener("click", async () => {
         let username = document.getElementById("username").value;
         // these were originally then ables but this works too, probably better 
         try {
             const response = await verifyLogin(username);
-            //After the login message 2.5s, show userview
+            //After the verifying my login promise in 2.5s, show userview
             setTimeout(() => {
                 userView(response);
             }, 2500);
         } catch (error){
+            //display reject error
             document.getElementById("loginText").innerText = (error);
         }
     });
@@ -321,18 +319,22 @@ document.addEventListener("DOMContentLoaded", () => {
         let userView = document.getElementById("userView");
         let login = document.getElementById("loginCard");
         let loginMessage = document.getElementById("loginText");
-        let video = document.getElementById("introVid");
 
+        //Reset my video
         video.currentTime = 0;
         video.muted = false;
         video.classList.remove("blurVideo");
+
+        //Reset my Login
         loginMessage.innerText = ("Login with Username or Email");
-        loginMessage.style.color = ("#e3d8cb");
+        loginMessage.style.color = ("#F7F7F7");
         loginMessage.classList.remove("errorText");
         loginMessage.classList.remove("fadeTextIn");
         loginMessage.classList.remove("shake");
         document.getElementById("username").value = "";
         login.style.display = "none";
+
+        //Hide my userview
         userView.style.display = "none";
         document.getElementById("heroPage").style.display = "block";
         document.getElementById("navbar").style.display = "none";
