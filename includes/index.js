@@ -1,7 +1,7 @@
 /**
  * C0522047
  * 
- * This my fan "login page" for the show House MD, it features logging in with a unique username assigned to each user, some more unique than others
+ * This my fan "login page" for the show House MD, it features logging in with a unique username assigned to each user or there respective email, some more unique than others
  * If you login wrong three times, House calls you stupid...
  * 
  * 15 users for 15 characters from house, each instance of the User has a unique description, and certain users have unique logins.
@@ -10,6 +10,14 @@
  * 
  * The login card page zooms in on the 4.3 second event in the intro...
  * 
+ * Been using github for my remote repository as well as using Github Page to share "https://goodvibezjpg.github.io/HouseMD-Login-Page-ICS128-Midterm/"
+ * 
+ * Down the road, I think it would be neat to have a clip/video play on hovering over a user or by cliking onto there profile picutre
+ *However I am not dealing with that on the Camosun Wifi
+ *
+ * It also utilizes DOMContent listener to avoid breaking my buttons!
+ * 
+ * Also Masonry for my profile cards
  */
 
 
